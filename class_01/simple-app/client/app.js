@@ -39,6 +39,11 @@ btn.addEventListener('click', async () => {
 			'Content-Type': 'application/json',
 		},
 	});
+
+	const users = await getUsers();
+	renderUsers(users);
+
+	input.value = '';
 });
 
 // Init
