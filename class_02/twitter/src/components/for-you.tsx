@@ -1,12 +1,12 @@
+import { TWEETS } from '../data/test-data';
 import ComposeTweet from './compose-tweet';
 import Tweets from './tweets';
 
 export default function ForYou() {
 	return (
 		<div>
-			<h1>For You</h1>
 			<ComposeTweet />
-			<Tweets />
+			<Tweets tweets={TWEETS} />
 		</div>
 	);
 }
