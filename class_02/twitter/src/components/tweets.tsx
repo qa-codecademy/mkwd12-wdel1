@@ -1,7 +1,12 @@
+import { TWEETS } from '../data/test-data';
+import Tweet from './tweet';
+
 export default function Tweets() {
 	return (
 		<div>
-			<h1>List of tweets</h1>
+			{TWEETS.map(tweet => (
+				<Tweet key={tweet.id} tweet={tweet} />
+			))}
 		</div>
 	);
 }
