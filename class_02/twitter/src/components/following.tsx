@@ -1,3 +1,12 @@
+import ComposeTweet from './compose-tweet';
+import Tweets from './tweets';
+
 export default function Following() {
-	return <h1>Following</h1>;
+	return (
+		<div>
+			<h1>Following</h1>
+			<ComposeTweet />
+			<Tweets />
+		</div>
+	);
 }
