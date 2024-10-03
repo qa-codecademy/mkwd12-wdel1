@@ -45,7 +45,7 @@ export default function Feed() {
 					<ForYou />
 				</TabsContent>
 				<TabsContent value={TabsValue.Following}>
-					<Following />
+					{/* <Following /> */}
 				</TabsContent>
 			</TabsList>
 		</Tabs>
