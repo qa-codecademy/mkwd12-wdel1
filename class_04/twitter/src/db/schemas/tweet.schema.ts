@@ -1,5 +1,6 @@
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { TweetType } from '../../types/tweet-type.enum';
+import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
 
 export const tweets = pgTable('tweets', {
 	id: uuid('id').primaryKey().defaultRandom(),
@@ -14,3 +15,5 @@ export const tweets = pgTable('tweets', {
 		.defaultNow(),
 });
 
+export type TweetModel = InferSelectModel<typeof tweets>;
+export type TweetCreateModel = InferInsertModel<typeof tweets>;
