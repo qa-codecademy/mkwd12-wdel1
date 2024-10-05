@@ -1,5 +1,6 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
 import { TweetCreateModel } from '../../db/schemas/tweet.schema';
 import { createTweet } from '../../services/tweets.service';
 
@@ -8,5 +9,7 @@ export async function submitTweet(formData: FormData) {
 		text: (formData.get('text') as string) || '',
 	};
 
-	createTweet(tweet);
+	await createTweet(tweet);
+
+	revalidatePath('/feed', 'page');
 }

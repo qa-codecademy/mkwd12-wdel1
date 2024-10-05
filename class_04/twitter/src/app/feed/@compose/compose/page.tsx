@@ -1,26 +1,25 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { Dialog, DialogHeader } from '../../../../components/ui/dialog';
 import {
+	Dialog,
 	DialogContent,
+	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
-} from '@radix-ui/react-dialog';
+} from '../../../../components/ui/dialog';
 import ComposeTweet from '../../../../components/compose-tweet';
+import { useRouter } from 'next/navigation';
 
-type ModalProps = {
-	children: ReactNode;
-};
+// type ModalProps = {};
 
-export default function Modal({ children }: ModalProps) {
+export default function Modal() {
+	const router = useRouter();
+
 	return (
-		<Dialog defaultOpen>
-			<DialogTrigger className='w-full'>{children}</DialogTrigger>
+		<Dialog defaultOpen onOpenChange={() => router.back()}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Compose a tweet</DialogTitle>
-					<ComposeTweet />
+					<ComposeTweet onSubmit={() => router.back()} />
 				</DialogHeader>
 			</DialogContent>
 		</Dialog>
