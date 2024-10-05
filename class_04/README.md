@@ -11,7 +11,11 @@ On top of that, we will explore the concept of routing, and how to use it to cre
 1. npm i drizzle-orm postgres
 2. npm i -D drizzle-kit
 3. make sure you have created a database named `twitter` in your PostgreSQL database
+4. npx shadcn@latest add dialog
 
 ## Resources
 
 - https://orm.drizzle.team/
+- https://nextjs.org/docs/app/building-your-application/routing/parallel-routes
+- https://nextjs.org/docs/app/building-your-application/routing/dynamic-routes
+- https://nextjs.org/docs/app/building-your-application/routing/redirecting
