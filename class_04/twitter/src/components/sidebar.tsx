@@ -32,7 +32,13 @@ export default function Sidebar() {
 					Profile
 				</Link>
 			</li>
-			<li>Post</li>
+			<li>
+				<Link
+					href={'/feed/compose'}
+					className='w-full bg-blue-500 p-4 rounded-full text-center font-bold cursor-pointer block'>
+					Post
+				</Link>
+			</li>
 		</ol>
 	);
 }
