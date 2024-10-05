@@ -1,12 +1,15 @@
-import { TweetCreateModel, TweetModel } from '../db/schemas/tweet.schema';
+import {
+	TweetCreateModel,
+	TweetExtendedModel,
+} from '../db/schemas/tweet.schema';
 import { create, find, findOneById } from '../repositories/tweets.repository';
 
 export const getTweets = async (
 	searchTerm?: string | null
-): Promise<TweetModel[]> => {
+): Promise<TweetExtendedModel[]> => {
 	const tweets = await find(searchTerm);
 
-	return tweets;
+	return tweets as TweetExtendedModel[];
 };
 
 export const getTweetById = async (id: string) => {

@@ -1,5 +1,6 @@
-export function formatDate(createdAt: string): string {
+export function formatDate(createdAt: string | Date): string {
 	const now = new Date();
+	createdAt = createdAt instanceof Date ? createdAt : new Date(createdAt);
 	const diffInSeconds = Math.floor(
 		(now.getTime() - new Date(createdAt).getTime()) / 1000
 	);

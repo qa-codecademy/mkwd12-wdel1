@@ -12,6 +12,9 @@ export const find = async (
 	try {
 		return db.query.tweets.findMany({
 			where: ilike(tweets.text, `%${searchTerm ?? ''}%`),
+			with: {
+				repliedTo: true,
+			},
 		});
 	} catch (error) {
 		console.error(error);

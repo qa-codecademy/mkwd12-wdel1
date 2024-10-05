@@ -38,4 +38,5 @@ export type TweetCreateModel = InferInsertModel<typeof tweets>;
 export type TweetExtendedModel = TweetModel & {
 	reposts: TweetModel[];
 	replies: TweetModel[];
+	repliedTo: TweetModel;
 };
