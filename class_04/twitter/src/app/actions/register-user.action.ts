@@ -1,5 +1,6 @@
 'use server';
 
+import { redirect } from 'next/navigation';
 import { UserCreateModel } from '../../db/schemas/user.schema';
 import { createUser } from '../../services/users.service';
 
@@ -11,4 +12,6 @@ export default async function registerUser(formData: FormData) {
 	};
 
 	await createUser(newUser);
+
+	redirect('/login');
 }
