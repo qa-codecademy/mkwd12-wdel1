@@ -1,6 +1,7 @@
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { TweetType } from '../../types/tweet-type.enum';
 import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
+import { usersLikedTweets } from './users_liked_tweets';
 
 export const tweets = pgTable('tweets', {
 	id: uuid('id').primaryKey().defaultRandom(),
@@ -30,6 +31,7 @@ export const tweetsRelations = relations(tweets, ({ one, many }) => ({
 		references: [tweets.id],
 		relationName: 'replies',
 	}),
+	likes: many(usersLikedTweets)
 }));
 
 export type TweetModel = InferSelectModel<typeof tweets>;

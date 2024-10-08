@@ -8,6 +8,8 @@ export const getTweets = async (
 	searchTerm?: string | null
 ): Promise<TweetExtendedModel[]> => {
 	const tweets = await find(searchTerm);
+	
+	console.log("🚀 ivo-test ~ tweets:", tweets)
 
 	return tweets as TweetExtendedModel[];
 };
@@ -25,3 +27,5 @@ export const createTweet = async (tweet: TweetCreateModel) => {
 
 	return createdTweet;
 };
+
+
