@@ -2,6 +2,7 @@ import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { TweetType } from '../../types/tweet-type.enum';
 import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
 import { usersLikedTweets } from './users_liked_tweets';
+import { UserModel, users } from './user.schema';
 
 export const tweets = pgTable('tweets', {
 	id: uuid('id').primaryKey().defaultRandom(),
@@ -13,6 +14,7 @@ export const tweets = pgTable('tweets', {
 		.notNull(),
 	originalTweetId: uuid('original_tweet_id'),
 	repliedToId: uuid('replied_to_id'),
+	authorId: uuid('author_id').notNull(),
 	createdAt: timestamp('created_at', { withTimezone: true })
 		.notNull()
 		.defaultNow(),
@@ -31,7 +33,12 @@ export const tweetsRelations = relations(tweets, ({ one, many }) => ({
 		references: [tweets.id],
 		relationName: 'replies',
 	}),
-	likes: many(usersLikedTweets)
+	likes: many(usersLikedTweets),
+	author: one(users, {
+		fields: [tweets.authorId],
+		references: [users.id],
+		relationName: 'author',
+	}),
 }));
 
 export type TweetModel = InferSelectModel<typeof tweets>;
@@ -39,6 +46,9 @@ export type TweetCreateModel = InferInsertModel<typeof tweets>;
 
 export type TweetExtendedModel = TweetModel & {
 	reposts: TweetModel[];
+	originalTweet: TweetModel;
 	replies: TweetModel[];
 	repliedTo: TweetModel;
+	likes: UserModel[];
+	author: UserModel;
 };
