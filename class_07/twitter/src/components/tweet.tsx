@@ -1,3 +1,5 @@
+'use client';
+
 import {
 	ArrowPathRoundedSquareIcon,
 	ArrowUturnUpIcon,
@@ -5,6 +7,7 @@ import {
 	HeartIcon,
 	LinkIcon,
 } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid';
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import Link from 'next/link';
@@ -13,12 +16,20 @@ import { TweetType } from '../types/tweet-type.enum';
 import { cn } from '../lib/utils';
 import { TweetExtendedModel } from '../db/schemas/tweet.schema';
 import { repostTweet } from '../app/actions/repost-tweet.action';
+import { useSession } from 'next-auth/react';
+import likeTweetAction from '../app/actions/like-tweet.action';
 
 type TweetProps = {
 	tweet: TweetExtendedModel;
 };
 
 export default function Tweet({ tweet }: TweetProps) {
+	const { data: session } = useSession();
+
+	const isLikedByCurrentUser = tweet.likes.some(
+		like => like.userId === session?.user.id
+	);
+
 	return (
 		<div
 			className={cn('flex flex-col', tweet.type === TweetType.Tweet && 'pt-4')}>
@@ -31,14 +42,12 @@ export default function Tweet({ tweet }: TweetProps) {
 			{tweet.type === TweetType.Repost && (
 				<div className='flex flex-row gap-2 items-center text-sm font-bold text-slate-500 ml-10 mt-5 mb-2'>
 					<ArrowPathRoundedSquareIcon className='size-5 text-slate-500 cursor-pointer' />
-					John Doe reposted
-					{/* TODO: Add original author */}
+					{tweet.author.name} reposted
 				</div>
 			)}
 			<div className='flex flex-row pl-4 pr-4 pb-4 gap-4 border-b-[1px] border-gray-600'>
 				<div>
-					{/* tweet.author?.username ??  */}
-					<Link href={'/'}>
+					<Link href={`/${tweet.author.username}`}>
 						<Avatar>
 							<AvatarImage
 								src='https://github.com/shadcn.png'
@@ -51,10 +60,19 @@ export default function Tweet({ tweet }: TweetProps) {
 				<div className='w-full flex flex-col'>
 					<div className='flex flex-row gap-2 items-center'>
 						<h1 className='font-bold'>
-							<Link href={'/'}>test</Link>
+							<Link href={`/${tweet.author.username}`}>
+								{tweet.type === TweetType.Repost
+									? tweet.originalTweet?.author.name
+									: tweet.author.name}
+							</Link>
 						</h1>
 						<h2 className='text-slate-500 text-sm'>
-							<Link href={'/'}>@{'test'}</Link>
+							<Link href={`/${tweet.author.username}`}>
+								@
+								{tweet.type === TweetType.Repost
+									? tweet.originalTweet?.author.username
+									: tweet.author.username}
+							</Link>
 						</h2>
 						<div className='text-slate-500 flex items-center justify-center'>
 							<div>-</div>
@@ -83,10 +101,24 @@ export default function Tweet({ tweet }: TweetProps) {
 							<input type='hidden' name='text' value={tweet.text} />
 							<input type='hidden' name='originalTweetId' value={tweet.id} />
 						</form>
-						<div className='flex flex-row gap-2 items-center'>
-							<HeartIcon className='size-7 text-slate-500 cursor-pointer' />
-							<span>0</span>
-						</div>
+						<form action={likeTweetAction}>
+							<input type='hidden' name='tweetId' value={tweet.id} />
+							<input
+								type='hidden'
+								name='isLiked'
+								value={isLikedByCurrentUser ? 'true' : 'false'}
+							/>
+							<button className='flex flex-row gap-2 items-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer'>
+								{!isLikedByCurrentUser ? (
+									<HeartIcon className='size-7 text-slate-500' />
+								) : (
+									<HeartIconSolid
+										className={cn('size-7 text-slate-500', 'text-red-500')}
+									/>
+								)}
+								<span>{tweet.likes.length ?? 0}</span>
+							</button>
+						</form>
 						<div className='flex flex-row gap-2 items-center'>
 							<Link href={`/tweet/${tweet.id}`}>
 								<LinkIcon className='size-7 text-slate-500 cursor-pointer' />

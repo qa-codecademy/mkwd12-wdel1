@@ -1,7 +1,7 @@
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { TweetType } from '../../types/tweet-type.enum';
 import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
-import { usersLikedTweets } from './users_liked_tweets';
+import { UserLikedTweetsModel, usersLikedTweets } from './users_liked_tweets';
 import { UserModel, users } from './user.schema';
 
 export const tweets = pgTable('tweets', {
@@ -46,9 +46,9 @@ export type TweetCreateModel = InferInsertModel<typeof tweets>;
 
 export type TweetExtendedModel = TweetModel & {
 	reposts: TweetModel[];
-	originalTweet: TweetModel;
+	originalTweet: TweetExtendedModel;
 	replies: TweetModel[];
 	repliedTo: TweetModel;
-	likes: UserModel[];
+	likes: UserLikedTweetsModel[];
 	author: UserModel;
 };
