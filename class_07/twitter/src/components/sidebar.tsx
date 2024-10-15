@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { UserModel } from '../db/schemas/user.schema';
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
+import Image from 'next/image';
 
 export default function Sidebar() {
 	const { data: session } = useSession();
@@ -72,6 +73,24 @@ export default function Sidebar() {
 							href={'/feed/compose'}
 							className='w-full bg-blue-500 p-4 rounded-full text-center font-bold cursor-pointer block'>
 							Post
+						</Link>
+					</li>
+					<li className='mt-auto'>
+						<Link
+							href={`/${session.user.username}`}
+							className='flex items-center gap-2'>
+							<div className='w-10 h-10 rounded-full overflow-hidden border-solid border-blue-500 border-2  shadow-md'>
+								<Image
+									alt='avatar'
+									src={user?.avatar ?? 'https://github.com/shadcn.png'}
+									width={50}
+									height={50}
+								/>
+								<div className='w-10'>
+									<h1 className='font-bold'>{user?.name}</h1>
+									<p className='text-md text-slate-500'>@{user?.username}</p>
+								</div>
+							</div>
 						</Link>
 					</li>
 				</>

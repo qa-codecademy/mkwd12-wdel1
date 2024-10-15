@@ -1,14 +1,22 @@
 import { UserCreateModel } from './../db/schemas/user.schema';
 import {
 	create,
+	findById,
 	findByUsername,
 	update,
 } from '../repositories/users.repository';
-import { create as createFollow } from '../repositories/follows.repository';
+import {
+	create as createFollow,
+	deleteFollow,
+} from '../repositories/follows.repository';
 import bcrypt from 'bcrypt';
 
 export async function getUserByUsername(username: string) {
 	return findByUsername(username);
+}
+
+export async function getUserById(id: string) {
+	return findById(id);
 }
 
 export async function loginUser({
@@ -57,4 +65,8 @@ export async function updateUser(
 
 export async function followUser(followerId: string, followeeId: string) {
 	return createFollow(followerId, followeeId);
+}
+
+export async function unfollowUser(followerId: string, followeeId: string) {
+	return deleteFollow(followerId, followeeId);
 }

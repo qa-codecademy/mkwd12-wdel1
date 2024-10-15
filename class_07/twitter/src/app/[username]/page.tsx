@@ -6,6 +6,7 @@ import { LinkIcon } from '@heroicons/react/24/outline';
 import { getNextServerSession } from '../../lib/next-auth';
 import unfollowUserAction from '../actions/unfollow-user.action';
 import followUserAction from '../actions/follow-user.action';
+import TweetsSection from './(components)/tweets-section';
 
 type ProfileProps = {
 	params: { username: string };
@@ -109,7 +110,7 @@ export default async function Profile({ params: { username } }: ProfileProps) {
 				</div>
 			</div>
 
-			{/* Tweet section */}
+			<TweetsSection userId={user.id} />
 		</div>
 	);
 }

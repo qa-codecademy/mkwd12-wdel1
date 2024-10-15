@@ -1,10 +1,11 @@
-import { desc, eq, ilike } from 'drizzle-orm';
+import { desc, eq, ilike, and, ne } from 'drizzle-orm';
 import { db } from '../db';
 import {
 	TweetCreateModel,
 	TweetModel,
 	tweets,
 } from '../db/schemas/tweet.schema';
+import { TweetType } from '../types/tweet-type.enum';
 
 export const find = async (
 	searchTerm?: string | null
@@ -25,6 +26,44 @@ export const find = async (
 		console.error(error);
 		return [];
 	}
+};
+
+export const findTweetsByUserId = (userId: string) => {
+	return db.query.tweets.findMany({
+		where: and(eq(tweets.authorId, userId), ne(tweets.type, TweetType.Reply)),
+		with: {
+			likes: true,
+			author: true,
+			replies: true,
+			reposts: true,
+		},
+	});
+};
+
+export const findRepliesByUserId = (userId: string) => {
+	return db.query.tweets.findMany({
+		where: and(eq(tweets.authorId, userId), eq(tweets.type, TweetType.Reply)),
+		with: {
+			likes: true,
+			author: true,
+			repliedTo: true,
+			replies: true,
+			reposts: true,
+		},
+	});
+};
+
+export const findLikedTweetsByUserId = (userId: string) => {
+	return db.query.tweets.findMany({
+		where: and(eq(tweets.authorId, userId), eq(tweets.type, TweetType.Reply)),
+		with: {
+			likes: true,
+			author: true,
+			repliedTo: true,
+			replies: true,
+			reposts: true,
+		},
+	});
 };
 
 export const findOneById = (id: string) => {

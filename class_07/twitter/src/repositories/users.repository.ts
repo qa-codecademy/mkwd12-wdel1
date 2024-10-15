@@ -11,6 +11,11 @@ export const findByUsername = (username: string) =>
 		},
 	});
 
+export const findById = (id: string) =>
+	db.query.users.findFirst({
+		where: eq(users.id, id),
+	});
+
 export const create = (user: UserCreateModel): Promise<UserModel> =>
 	db
 		.insert(users)
