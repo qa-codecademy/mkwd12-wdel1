@@ -8,9 +8,9 @@ export default async function likeTweetAction(formData: FormData) {
 	const tweetId = formData.get('tweetId') as string;
 
 	if (!isLikedByCurrentUser) {
-		likeTweet(tweetId);
+		await likeTweet(tweetId);
 	} else {
-		unlikeTweet(tweetId);
+		await unlikeTweet(tweetId);
 	}
 
 	revalidatePath('/', 'page');

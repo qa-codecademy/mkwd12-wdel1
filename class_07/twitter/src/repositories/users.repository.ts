@@ -13,3 +13,14 @@ export const create = (user: UserCreateModel): Promise<UserModel> =>
 		.values(user)
 		.returning()
 		.then(res => res?.[0]);
+
+export const update = (
+	id: string,
+	userData: Omit<UserCreateModel, 'password'>
+) =>
+	db
+		.update(users)
+		.set(userData)
+		.where(eq(users.id, id))
+		.returning()
+		.then(res => res?.[0]);

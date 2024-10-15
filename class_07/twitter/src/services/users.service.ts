@@ -1,5 +1,5 @@
 import { UserCreateModel } from './../db/schemas/user.schema';
-import { create, findByUsername } from '../repositories/users.repository';
+import { create, findByUsername, update } from '../repositories/users.repository';
 import bcrypt from 'bcrypt';
 
 export async function getUserByUsername(username: string) {
@@ -41,4 +41,11 @@ export async function createUser(userData: UserCreateModel) {
 	};
 
 	return create(userWithEncryptedPassword);
+}
+
+export async function updateUser(
+	id: string,
+	userData: Omit<UserCreateModel, 'password'>
+) {
+	return update(id, userData)
 }
