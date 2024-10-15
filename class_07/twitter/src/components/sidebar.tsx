@@ -52,7 +52,9 @@ export default function Sidebar() {
 						</Link>
 					</li>
 					<li>
-						<Link href='/profile' className='flex items-center gap-2'>
+						<Link
+							href={`/${session.user.username}`}
+							className='flex items-center gap-2'>
 							<UserCircleIcon className='size-10' />
 							Profile
 						</Link>

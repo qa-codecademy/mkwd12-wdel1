@@ -5,6 +5,10 @@ import { UserCreateModel, UserModel, users } from '../db/schemas/user.schema';
 export const findByUsername = (username: string) =>
 	db.query.users.findFirst({
 		where: eq(users.username, username),
+		with: {
+			followers: true,
+			following: true,
+		},
 	});
 
 export const create = (user: UserCreateModel): Promise<UserModel> =>
