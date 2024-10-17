@@ -20,6 +20,7 @@ export const find = async (
 				reposts: true,
 				likes: true,
 				author: true,
+				originalTweet: true,
 			},
 		});
 	} catch (error) {
@@ -36,6 +37,8 @@ export const findTweetsByUserId = (userId: string) => {
 			author: true,
 			replies: true,
 			reposts: true,
+			originalTweet: true,
+			repliedTo: true,
 		},
 	});
 };
@@ -49,6 +52,7 @@ export const findRepliesByUserId = (userId: string) => {
 			repliedTo: true,
 			replies: true,
 			reposts: true,
+			originalTweet: true,
 		},
 	});
 };
@@ -70,12 +74,20 @@ export const findOneById = (id: string) => {
 	try {
 		return db.query.tweets.findFirst({
 			where: eq(tweets.id, id),
+			with: {
+				author: true,
+				likes: true,
+				reposts: true,
+				replies: true,
+				repliedTo: true,
+				originalTweet: true,
+			},
 		});
 	} catch (error) {
 		console.error(error);
 	}
 };
-
+          
 export const create = (tweet: TweetCreateModel): Promise<TweetModel> => {
 	return db
 		.insert(tweets)

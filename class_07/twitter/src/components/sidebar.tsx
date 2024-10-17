@@ -26,14 +26,14 @@ export default function Sidebar() {
 			return;
 		}
 
-		fetch(`http://localhost:3000/api/user/${session.user.username}}`)
+		fetch(`http://localhost:3000/api/users/${session.user.username}`)
 			.then(res => res.json())
 			.then(resUser => setUser(resUser));
 	}, [session]);
 
 	return (
 		<ol className='flex flex-col gap-3 py-2 h-full'>
-			{session ? (
+			{session && user ? (
 				<>
 					<li>
 						<Link href='/' className='flex items-center gap-2'>
@@ -82,14 +82,14 @@ export default function Sidebar() {
 							<div className='w-10 h-10 rounded-full overflow-hidden border-solid border-blue-500 border-2  shadow-md'>
 								<Image
 									alt='avatar'
-									src={user?.avatar ?? 'https://github.com/shadcn.png'}
+									src={user.avatar ?? 'https://github.com/shadcn.png'}
 									width={50}
 									height={50}
 								/>
-								<div className='w-10'>
-									<h1 className='font-bold'>{user?.name}</h1>
-									<p className='text-md text-slate-500'>@{user?.username}</p>
-								</div>
+							</div>
+							<div className='w-10'>
+								<h1 className='font-bold'>{user.name}</h1>
+								<p className='text-md text-slate-500'>@{user.username}</p>
 							</div>
 						</Link>
 					</li>
