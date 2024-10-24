@@ -32,13 +32,17 @@ export const users = createTable(
 			.defaultNow(),
 	},
 	t => ({
+		// Here we define a unique constraint on the username column
 		unq: unique().on(t.username),
 	})
 );
 
 export const usersRelations = relations(users, ({ many }) => ({
+	// following are the users that the user is following
 	following: many(follows, { relationName: 'follows' }),
+	// followers are the users that are following the user
 	followers: many(follows, { relationName: 'followers' }),
+	// liked tweets are the tweets that the user has liked
 	likedTweets: many(usersLikedTweets),
 }));
 

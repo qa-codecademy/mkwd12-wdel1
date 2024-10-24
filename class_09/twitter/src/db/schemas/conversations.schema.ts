@@ -1,4 +1,3 @@
-import { ConversationModel } from './conversations.schema';
 import { pgTableCreator, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { UserModel, users } from './user.schema';
 import { InferInsertModel, InferSelectModel, relations } from 'drizzle-orm';
@@ -21,7 +20,11 @@ export const conversations = createTable('conversations', {
 
 export const conversationsRelations = relations(
 	conversations,
+	// one and many are used to define the relations between the conversations and the users and messages
+	// one is used to define a one-to-one relation
+	// many is used to define a one-to-many relation
 	({ one, many }) => ({
+		// We define the relations between the conversations and the users
 		userA: one(users, {
 			fields: [conversations.userA],
 			references: [users.id],
@@ -32,7 +35,8 @@ export const conversationsRelations = relations(
 			references: [users.id],
 			relationName: 'userB',
 		}),
-		messages: many(messages, { relationName: 'message' }),
+		// We define the relations between the conversations and the messages
+		messages: many(messages, { relationName: 'messages' }),
 	})
 );
 
@@ -42,7 +46,10 @@ export type ConversationExtendedModel = InferSelectModel<
 > & {
 	userA: UserModel;
 	userB: UserModel;
-	messages: MessageExtendedModel;
+	messages: MessageExtendedModel[];
 };
-
 export type ConversationCreateModel = InferInsertModel<typeof conversations>;
+
+// By using InferInsertModel, we can create a new conversation without having to specify the fields
+// Drizzle will automatically infer the fields based on the schema
+// This is useful when we want to create a new conversation

@@ -28,6 +28,8 @@ export default function ComposeTweet({
 	const { data: session } = useSession();
 	const [user, setUser] = useState<UserModel>();
 
+	// we pass type and repliedToId as query parameters to the compose tweet component
+	// if we have a repliedToId, we know that we are replying to a tweet
 	const searchParams = useSearchParams();
 
 	useEffect(() => {
@@ -59,6 +61,7 @@ export default function ComposeTweet({
 	}, [searchParams, type, session?.user?.username]);
 
 	if (!user) {
+		// this should be handled better, we should show a loading spinner when loading, and if the user is not found, we should show a 404 page
 		return <LoadingSpinner />;
 	}
 

@@ -16,6 +16,13 @@ import {
 } from '../repositories/like.repository';
 import { getUserById } from './users.service';
 
+// Services are used to handle business logic
+// They are used to validate data, perform calculations, etc.
+// They are used in:
+// - Controllers (API routes)
+// - Middleware (authentication, authorization)
+// - Server Components
+
 export const getTweets = async (
 	searchTerm?: string | null
 ): Promise<TweetExtendedModel[]> => {
@@ -48,6 +55,7 @@ export const getUsersLikedTweets = async (userId: string) => {
 	const user = await getUserById(userId);
 
 	if (!user) {
+		// throwing an error would be better to properly handle such cases
 		return [];
 	}
 
@@ -57,7 +65,7 @@ export const getUsersLikedTweets = async (userId: string) => {
 export const getTweetById = async (id: string) => {
 	const tweet = await findOneById(id);
 
-	return tweet as TweetExtendedModel;
+	return tweet as unknown as TweetExtendedModel;
 };
 
 export const createTweet = async (tweet: TweetCreateModel) => {

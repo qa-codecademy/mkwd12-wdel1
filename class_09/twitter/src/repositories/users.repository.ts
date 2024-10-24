@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { eq, ilike } from 'drizzle-orm';
 import { db } from '../db';
 import { UserCreateModel, UserModel, users } from '../db/schemas/user.schema';
 
@@ -14,6 +14,11 @@ export const findByUsername = (username: string) =>
 export const findById = (id: string) =>
 	db.query.users.findFirst({
 		where: eq(users.id, id),
+	});
+
+export const findUsersByName = (searchTerm: string) =>
+	db.query.users.findMany({
+		where: ilike(users.name, `%${searchTerm}%`),
 	});
 
 export const create = (user: UserCreateModel): Promise<UserModel> =>

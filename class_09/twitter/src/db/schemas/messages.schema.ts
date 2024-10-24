@@ -16,7 +16,9 @@ export const messages = createTable('messages', {
 	conversationId: uuid('conversation_id')
 		.notNull()
 		.references(() => conversations.id),
-	createdAt: timestamp('created_at', { withTimezone: true }),
+	createdAt: timestamp('created_at', { withTimezone: true })
+		.defaultNow()
+		.notNull(),
 });
 
 export const messagesRelations = relations(messages, ({ one }) => ({

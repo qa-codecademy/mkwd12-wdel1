@@ -7,7 +7,7 @@ export const create = (tweetId: string, userId: string) =>
 		.insert(usersLikedTweets)
 		.values({ tweetId, userId })
 		.returning()
-		.then(res => res?.[0]);
+		.then(res => res?.[0]); // Returning the first element of the array, as drizzle always returns an array
 
 export function deleteTweet(tweetId: string, userId: string) {
 	return db

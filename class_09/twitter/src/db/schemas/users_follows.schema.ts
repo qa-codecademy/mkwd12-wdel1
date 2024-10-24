@@ -9,24 +9,29 @@ const createTable = pgTableCreator(
 export const follows = createTable(
 	'follows',
 	{
+		// followerId is the user that is following the followee
 		followerId: uuid('follower_id')
 			.notNull()
 			.references(() => users.id),
+		// followeeId is the user that is being followed by the follower
 		followeeId: uuid('followee_id')
 			.notNull()
 			.references(() => users.id),
 	},
 	t => ({
+		// same as in plain SQL, the primary key is a combination of the two columns in a many-to-many relation
 		pk: primaryKey({ columns: [t.followerId, t.followeeId] }),
 	})
 );
 
 export const usersFollowersRelations = relations(follows, ({ one }) => ({
+	// follower is the user that is following the followee
 	follower: one(users, {
 		fields: [follows.followerId],
 		references: [users.id],
 		relationName: 'follows',
 	}),
+	// followee is the user that is being followed by the follower
 	followee: one(users, {
 		fields: [follows.followeeId],
 		references: [users.id],

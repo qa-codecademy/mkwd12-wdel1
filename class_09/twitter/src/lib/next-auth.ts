@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { getUserByUsername } from '../services/users.service';
 import bcrypt from 'bcrypt';
 
+// We re-declare the Session interface to add the user id and username to the session
 declare module 'next-auth' {
 	interface Session {
 		user: {
@@ -14,6 +15,7 @@ declare module 'next-auth' {
 
 export const options: NextAuthOptions = {
 	providers: [
+		// We add the credentials provider to the providers array that will be used to authenticate the user with username and password
 		CredentialsProvider({
 			name: 'Credentials',
 			credentials: {
@@ -21,17 +23,17 @@ export const options: NextAuthOptions = {
 				password: {},
 			},
 			async authorize(credentials) {
-				console.log('🚀 ivo-test ~ authorize ~ credentials:', credentials);
-
 				if (!credentials) return null;
 
 				const { username, password } = credentials;
 
+				// We get the user by username
 				const user = await getUserByUsername(username);
-				console.log('🚀 ivo-test ~ authorize ~ user:', user);
 
+				// If the user does not exist, we return null
 				if (!user) return null;
 
+				// We compare the password with the hashed password
 				if (bcrypt.compareSync(password, user.password)) {
 					return {
 						id: user.id,
@@ -40,15 +42,13 @@ export const options: NextAuthOptions = {
 					};
 				}
 
+				// If the password is incorrect, we return null
 				return null;
 			},
 		}),
 	],
 	callbacks: {
 		async session({ session, user, token }) {
-			console.log('🚀 ivo-test ~ session ~ token:', token);
-			console.log('🚀 ivo-test ~ session ~ user:', user);
-			console.log('🚀 ivo-test ~ session ~ session:', session);
 			return {
 				...session,
 				user: {
@@ -62,7 +62,7 @@ export const options: NextAuthOptions = {
 	pages: {
 		signIn: '/login',
 	},
-	secret: 'say_lalisa_love_me_lalisa_love_me_hey',
+	secret: process.env.NEXTAUTH_SECRET,
 };
 
 export const getNextServerSession = () => getServerSession(options);

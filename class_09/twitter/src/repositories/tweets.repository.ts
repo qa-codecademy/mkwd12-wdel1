@@ -22,6 +22,7 @@ export const find = async (
 				author: true,
 				originalTweet: {
 					with: {
+						// selecting the author of the original tweet
 						author: true,
 					},
 				},
@@ -62,6 +63,7 @@ export const findRepliesByUserId = (userId: string) => {
 			reposts: true,
 			originalTweet: {
 				with: {
+					// selecting the author of the original tweet
 					author: true,
 				},
 			},
@@ -93,10 +95,12 @@ export const findOneById = (id: string) => {
 				repliedTo: true,
 				originalTweet: {
 					with: {
+						// selecting the author of the original tweet
 						author: true,
 					},
 				},
 				replies: {
+					// selecting additional i
 					with: {
 						author: true,
 						likes: true,

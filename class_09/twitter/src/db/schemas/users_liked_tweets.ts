@@ -18,6 +18,7 @@ export const usersLikedTweets = createTable(
 			.references(() => tweets.id),
 	},
 	t => ({
+		// same as in plain SQL, the primary key is a combination of the two columns in a many-to-many relation
 		pk: primaryKey({ columns: [t.userId, t.tweetId] }),
 	})
 );

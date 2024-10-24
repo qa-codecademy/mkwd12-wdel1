@@ -42,7 +42,7 @@ export default function Tweet({ tweet }: TweetProps) {
 			{tweet.type === TweetType.Repost && (
 				<div className='flex flex-row gap-2 items-center text-sm font-bold text-slate-500 ml-10 mt-5 mb-2'>
 					<ArrowPathRoundedSquareIcon className='size-5 text-slate-500 cursor-pointer' />
-					{tweet.author?.name ?? 'Someone'} reposted
+					{tweet.author.name ?? 'Someone'} reposted
 				</div>
 			)}
 			<div className='flex flex-row pl-4 pr-4 pb-4 gap-4 border-b-[1px] border-gray-600'>

@@ -21,6 +21,7 @@ export default function Sidebar() {
 	const [user, setUser] = useState<UserModel>();
 
 	useEffect(() => {
+		// each time the session changes, we fetch the user
 		if (!session?.user?.username) {
 			setUser(undefined);
 			return;
